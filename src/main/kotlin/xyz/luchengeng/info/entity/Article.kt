@@ -10,15 +10,20 @@ data class Article(@Id @GeneratedValue(strategy = GenerationType.AUTO) val id : 
                    val title: String,
                    @ElementCollection
                    val cover: MutableList<UUID>,
-                   val article: UUID,
+                   var article: UUID,
                    val time: LocalDateTime,
                    val type: Type,
-                   val published: Boolean
+                   var published: Boolean
                    )
 
 enum class Type{
-    ANTIQUE,
-    NEWS
+    NEWS,
+    ACTIVITY,
+    POLICY,
+    ANNOUNCE,
+    TAX_FREE,
+    EXHIBITION,
+    AUCTION
 }
 
 data class ArticleDto(val id: Long,

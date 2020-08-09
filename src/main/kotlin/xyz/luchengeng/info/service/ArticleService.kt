@@ -6,6 +6,7 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import xyz.luchengeng.info.entity.Article
 import xyz.luchengeng.info.entity.Type
+import xyz.luchengeng.info.except.ConflictException
 import xyz.luchengeng.info.except.NotFoundException
 import xyz.luchengeng.info.repo.ArticleRepo
 import java.time.LocalDateTime
@@ -13,15 +14,11 @@ import java.time.LocalDateTime
 
 @Service
 class ArticleService @Autowired constructor(private val articleRepo: ArticleRepo,private val contentService: ContentService) {
-    fun postArticle(article: String,title: String)=
+    fun postArticle(article: String,title: String,type: Type)=
         articleRepo.save(
-        Article(null,title, mutableListOf(),contentService.saveContent(article),LocalDateTime.now(),Type.NEWS,false)
+        Article(null,title, mutableListOf(),contentService.saveContent(article),LocalDateTime.now(),type,false)
         )
 
-    fun postAntique(article: String,title: String)=
-            articleRepo.save(
-                    Article(null,title, mutableListOf(),contentService.saveContent(article),LocalDateTime.now(),Type.ANTIQUE,false)
-            )
 
     fun postCover(id: Long,pic: ByteArray){
         val uuid = contentService.saveContent(pic)
@@ -49,9 +46,23 @@ class ArticleService @Autowired constructor(private val articleRepo: ArticleRepo
         articleRepo.delete(article)
     }
 
+    fun publish(id: Long){
+        val article = (articleRepo.findByIdOrNull(id)?:throw NotFoundException("Article Not Found"))
+        if(article.published) throw ConflictException("Article already published")
+        article.published = true
+        articleRepo.save(article)
+    }
+
     fun pageByTypeAndPublished(type: Type,published : Boolean,pageable: Pageable)=
             articleRepo.findByTypeAndPublished(type, published, pageable)
 
     fun pageByType(type: Type,pageable: Pageable)=
             articleRepo.findByType(type, pageable)
+
+    fun updateArticle(id: Long,a: String){
+        val article = (articleRepo.findByIdOrNull(id)?:throw NotFoundException("Article Not Found"))
+        contentService.delContent(article.article)
+        article.article = contentService.saveContent(a)
+        articleRepo.save(article)
+    }
 }

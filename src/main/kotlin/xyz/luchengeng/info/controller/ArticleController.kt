@@ -21,11 +21,9 @@ class ArticleController @Autowired constructor(private val articleService: Artic
     fun getPageByType(@PathVariable type : Type,@RequestBody pageRequest : ApiPageRequest) =
             articleService.pageByType(type,pageRequest.toPageRequest())
 
-    @PostMapping("/article/{title}")
-    fun postArticle(@RequestBody article: String,@PathVariable title: String)=articleService.postArticle(article, title)
-    @PostMapping("/antique/{title}")
-    fun postAntique(@RequestBody article: String,@PathVariable title: String)=
-            articleService.postAntique(article, title)
+    @PostMapping("/article/{type}/{title}")
+    fun postArticle(@RequestBody article: String,@PathVariable type : Type,@PathVariable title: String)=articleService.postArticle(article, title,type)
+
     @PostMapping("/article/{id}/cover")
     fun postCover(@PathVariable id: Long,@RequestBody pic: ByteArray){
         articleService.postCover(id, pic)
@@ -33,8 +31,13 @@ class ArticleController @Autowired constructor(private val articleService: Artic
     @GetMapping("/article/{id}")
     fun getArticleById(@PathVariable id : Long) =
             articleService.getArticleById(id)
+    @GetMapping("/article/{id}/publish")
+    fun publishArticle(@PathVariable id: Long) =
+            articleService.publish(id)
     @GetMapping("/article/{id}/cover/{index}")
     fun getCoverById(@PathVariable id: Long,@PathVariable index: Int): ByteArray = articleService.getCoverById(id, index)
     @DeleteMapping("/article/{id}")
     fun delArticle(@PathVariable id: Long)=articleService.delArticle(id)
+    @PutMapping("/article/{id}")
+    fun updateArticle(@PathVariable id: Long,@RequestBody article : String)=articleService.updateArticle(id,article)
 }
