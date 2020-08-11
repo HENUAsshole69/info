@@ -14,4 +14,6 @@ interface ArticleRepo: JpaRepository<Article,Long>{
 
     @Query("select new xyz.luchengeng.info.entity.ArticleDto(a) from Article a where a.type = ?1",countQuery = "select count(a) from Article a where a.type = ?1")
     fun findByType(type: Type,pageable: Pageable) : Page<ArticleDto>
+    @Query("select new xyz.luchengeng.info.entity.ArticleDto(a) from Article a where a.headline = true",countQuery = "select count(a) from Article a where a.headline = true")
+    fun findHeadline() : List<ArticleDto>
 }

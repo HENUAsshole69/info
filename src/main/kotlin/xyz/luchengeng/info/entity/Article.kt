@@ -13,7 +13,8 @@ data class Article(@Id @GeneratedValue(strategy = GenerationType.AUTO) val id : 
                    var article: UUID,
                    val time: LocalDateTime,
                    val type: Type,
-                   var published: Boolean
+                   var published: Boolean,
+                   var headline : Boolean?
                    )
 
 enum class Type{
@@ -30,6 +31,7 @@ data class ArticleDto(val id: Long,
                       val title: String,
                       val published : Boolean,
                       val time : LocalDateTime,
-                      val type : Type){
-    constructor(a : Article) : this(a.id?:(-1),a.title, a.published, a.time, a.type)
+                      val type : Type,
+                      var headline : Boolean?){
+    constructor(a : Article) : this(a.id?:(-1),a.title, a.published, a.time, a.type,a.headline)
 }

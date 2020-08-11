@@ -31,6 +31,11 @@ class ArticleController @Autowired constructor(private val articleService: Artic
     @GetMapping("/article/{id}")
     fun getArticleById(@PathVariable id : Long) =
             articleService.getArticleById(id)
+
+    @GetMapping("/article/{id}/dto")
+    fun getArticleDtoById(@PathVariable id : Long) =
+            articleService.getArticleDtoById(id)
+
     @GetMapping("/article/{id}/publish")
     fun publishArticle(@PathVariable id: Long) =
             articleService.publish(id)
@@ -40,4 +45,13 @@ class ArticleController @Autowired constructor(private val articleService: Artic
     fun delArticle(@PathVariable id: Long)=articleService.delArticle(id)
     @PutMapping("/article/{id}")
     fun updateArticle(@PathVariable id: Long,@RequestBody article : String)=articleService.updateArticle(id,article)
+    @GetMapping("/headline")
+    fun getHeadline() =
+            articleService.getHeadline()
+    @PostMapping("/article/{id}/headline")
+    fun postHeadline(@PathVariable id: Long) =
+            articleService.postHeadline(id)
+    @DeleteMapping("/article/{id}/headline")
+    fun delDeadline(@PathVariable id: Long) =
+            articleService.delHeadline(id)
 }

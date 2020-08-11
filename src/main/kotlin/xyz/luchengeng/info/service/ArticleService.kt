@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import xyz.luchengeng.info.entity.Article
+import xyz.luchengeng.info.entity.ArticleDto
 import xyz.luchengeng.info.entity.Type
 import xyz.luchengeng.info.except.ConflictException
 import xyz.luchengeng.info.except.NotFoundException
@@ -16,7 +17,7 @@ import java.time.LocalDateTime
 class ArticleService @Autowired constructor(private val articleRepo: ArticleRepo,private val contentService: ContentService) {
     fun postArticle(article: String,title: String,type: Type)=
         articleRepo.save(
-        Article(null,title, mutableListOf(),contentService.saveContent(article),LocalDateTime.now(),type,false)
+        Article(null,title, mutableListOf(),contentService.saveContent(article),LocalDateTime.now(),type,false,false)
         )
 
 
@@ -30,6 +31,8 @@ class ArticleService @Autowired constructor(private val articleRepo: ArticleRepo
     fun getArticleById(id : Long) =
             contentService.getArticle((articleRepo.findByIdOrNull(id)?:throw NotFoundException("Article Not Found")).article)
 
+    fun getArticleDtoById(id : Long) =
+            ArticleDto((articleRepo.findByIdOrNull(id)?:throw NotFoundException("Article Not Found")))
 
     fun getCoverById(id: Long,index: Int): ByteArray {
         val article = articleRepo.findByIdOrNull(id)?:throw NotFoundException("Article Not Found")
@@ -65,4 +68,17 @@ class ArticleService @Autowired constructor(private val articleRepo: ArticleRepo
         article.article = contentService.saveContent(a)
         articleRepo.save(article)
     }
+
+    fun postHeadline(id : Long){
+        val article = (articleRepo.findByIdOrNull(id)?:throw NotFoundException("Article Not Found"))
+        article.headline  = true
+        articleRepo.save(article)
+    }
+    fun delHeadline(id : Long){
+        val article = (articleRepo.findByIdOrNull(id)?:throw NotFoundException("Article Not Found"))
+        article.headline = false
+        articleRepo.save(article)
+    }
+    fun getHeadline()=
+            articleRepo.findHeadline()
 }
