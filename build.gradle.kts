@@ -26,6 +26,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("io.minio:minio:6.0.13")
+    implementation("com.auth0:java-jwt:3.9.0")
     implementation("mysql:mysql-connector-java:8.0.21")
     implementation(files("lib/minio-starter-3.0-SNAPSHOT.jar"))
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
