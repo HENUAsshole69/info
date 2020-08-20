@@ -53,4 +53,9 @@ class SecurityService @Autowired constructor(private val authenticationService: 
         cred.password = password
         credRepo.save(cred)
     }
+
+    fun register(cred : Credential) : Credential {
+        cred.user.type = UserType.INDIVIDUAL
+        return credRepo.save(cred)
+    }
 }

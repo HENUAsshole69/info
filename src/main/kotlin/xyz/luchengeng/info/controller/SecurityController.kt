@@ -19,6 +19,11 @@ class SecurityController @Autowired constructor(private val securityService: Sec
         return securityService.login(userName, password)
     }
 
+    @PostMapping("/register")
+    fun register(@RequestBody credential: Credential){
+        securityService.register(credential)
+    }
+
     @GetMapping("/user")
     fun getUserObj(@RequestHeader("x-api-key") jwt : String)=
             securityService.auth("getUserObj",jwt)

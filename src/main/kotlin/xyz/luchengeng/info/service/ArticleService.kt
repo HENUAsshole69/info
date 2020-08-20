@@ -4,22 +4,45 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import xyz.luchengeng.info.entity.Article
-import xyz.luchengeng.info.entity.ArticleDto
-import xyz.luchengeng.info.entity.Type
+import xyz.luchengeng.info.entity.*
 import xyz.luchengeng.info.except.ConflictException
 import xyz.luchengeng.info.except.NotFoundException
 import xyz.luchengeng.info.repo.ArticleRepo
 import java.time.LocalDateTime
+import javax.annotation.PostConstruct
 
 
 @Service
 class ArticleService @Autowired constructor(private val articleRepo: ArticleRepo,private val contentService: ContentService) {
-    fun postArticle(article: String,title: String,type: Type)=
+    fun postArticle(user: User,article: String,title: String,type: Type)=
         articleRepo.save(
-        Article(null,title, mutableListOf(),contentService.saveContent(article),LocalDateTime.now(),type,false,false)
+        Article(null,title, mutableListOf(),contentService.saveContent(article),LocalDateTime.now(),type,false,false,user)
         )
 
+    fun postArticle(user: User,article: String,title: String,type: Type,subType : SubType)=
+            articleRepo.save(
+                    Article(null,title, mutableListOf(),contentService.saveContent(article),LocalDateTime.now(),type,false,false,user,subType = subType)
+            )
+    @PostConstruct
+    fun addStaticContent(){
+        if(articleRepo.count() != 0L) return
+        val emptyContent = "{\"ops\":[{\"insert\":\"\\n\"}]}"
+        articleRepo.save(
+                Article(null,"艺术品介绍", mutableListOf(),contentService.saveContent(emptyContent),LocalDateTime.now(),null,false,false,null)
+        )
+        articleRepo.save(
+                Article(null,"保存介绍", mutableListOf(),contentService.saveContent(emptyContent),LocalDateTime.now(),null,false,false,null)
+        )
+        articleRepo.save(
+                Article(null,"海关监管", mutableListOf(),contentService.saveContent(emptyContent),LocalDateTime.now(),null,false,false,null)
+        )
+        articleRepo.save(
+                Article(null,"展讯介绍", mutableListOf(),contentService.saveContent(emptyContent),LocalDateTime.now(),null,false,false,null)
+        )
+        articleRepo.save(
+                Article(null,"拍卖厅介绍", mutableListOf(),contentService.saveContent(emptyContent),LocalDateTime.now(),null,false,false,null)
+        )
+    }
 
     fun postCover(id: Long,pic: ByteArray){
         val uuid = contentService.saveContent(pic)
@@ -62,6 +85,9 @@ class ArticleService @Autowired constructor(private val articleRepo: ArticleRepo
     fun pageByType(type: Type,pageable: Pageable)=
             articleRepo.findByType(type, pageable)
 
+    fun pageByTypeAndUser(type: Type,user: User,pageable: Pageable)=
+            articleRepo.findByTypeANdUser(type,user, pageable)
+
     fun updateArticle(id: Long,a: String){
         val article = (articleRepo.findByIdOrNull(id)?:throw NotFoundException("Article Not Found"))
         contentService.delContent(article.article)
@@ -81,4 +107,6 @@ class ArticleService @Autowired constructor(private val articleRepo: ArticleRepo
     }
     fun getHeadline()=
             articleRepo.findHeadline()
+
+    fun getPageByTypeAndSubType(type: Type,subType: SubType,pageable: Pageable) = articleRepo.findByTypeAndSubType(type,subType,true,pageable)
 }
