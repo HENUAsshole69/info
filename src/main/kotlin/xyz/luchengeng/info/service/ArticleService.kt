@@ -63,6 +63,15 @@ class ArticleService @Autowired constructor(private val articleRepo: ArticleRepo
         return contentService.getPic(article.cover[index])
     }
 
+    fun clearArticleCoverById(id: Long){
+        val article = articleRepo.findByIdOrNull(id)?:throw NotFoundException("Article Not Found")
+        article.cover.forEach {
+            contentService.delContent(it)
+        }
+        article.cover.clear()
+        articleRepo.save(article)
+    }
+
     fun delArticle(id : Long){
         val article = (articleRepo.findByIdOrNull(id)?:throw NotFoundException("Article Not Found"))
         article.cover.forEach {

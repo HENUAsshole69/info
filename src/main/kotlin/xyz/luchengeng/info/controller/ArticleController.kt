@@ -61,6 +61,8 @@ class ArticleController @Autowired constructor(private val articleService: Artic
             articleService.publish(id)
     @GetMapping("/article/{id}/cover/{index}")
     fun getCoverById(@PathVariable id: Long,@PathVariable index: Int): ByteArray = articleService.getCoverById(id, index)
+    @DeleteMapping("/article/{id}/cover")
+    fun delCoverById(@PathVariable id: Long) = articleService.clearArticleCoverById(id)
     @DeleteMapping("/article/{id}")
     fun delArticle(@PathVariable id: Long)=articleService.delArticle(id)
     @PutMapping("/article/{id}")
