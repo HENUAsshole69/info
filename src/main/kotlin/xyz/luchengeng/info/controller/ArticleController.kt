@@ -66,7 +66,10 @@ class ArticleController @Autowired constructor(private val articleService: Artic
     @DeleteMapping("/article/{id}")
     fun delArticle(@PathVariable id: Long)=articleService.delArticle(id)
     @PutMapping("/article/{id}")
-    fun updateArticle(@PathVariable id: Long,@RequestBody article : String)=articleService.updateArticle(id,article)
+    fun updateArticle(@RequestHeader("x-api-key") token : String,@PathVariable id: Long,@RequestBody article : String){
+        val user = authenticationService.tokenVerify(token)
+        return articleService.updateArticle(id,article,user)
+    }
     @GetMapping("/headline")
     fun getHeadline() =
             articleService.getHeadline()

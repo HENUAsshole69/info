@@ -6,6 +6,7 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import xyz.luchengeng.info.entity.*
 import xyz.luchengeng.info.except.ConflictException
+import xyz.luchengeng.info.except.NotAuthorizedException
 import xyz.luchengeng.info.except.NotFoundException
 import xyz.luchengeng.info.repo.ArticleRepo
 import java.time.LocalDateTime
@@ -97,8 +98,10 @@ class ArticleService @Autowired constructor(private val articleRepo: ArticleRepo
     fun pageByTypeAndUser(type: Type,user: User,pageable: Pageable)=
             articleRepo.findByTypeANdUser(type,user, pageable)
 
-    fun updateArticle(id: Long,a: String){
+    fun updateArticle(id: Long,a: String,user : User){
         val article = (articleRepo.findByIdOrNull(id)?:throw NotFoundException("Article Not Found"))
+        if(user.type != UserType.ADMIN)
+            if(article.user?.id !== user.id) throw NotAuthorizedException("")
         contentService.delContent(article.article)
         article.article = contentService.saveContent(a)
         articleRepo.save(article)
