@@ -42,6 +42,7 @@ data class ArticleDto(val id: Long,
                       val published : Boolean,
                       val time : LocalDateTime,
                       val type : Type,
+                      val subType: SubType?,
                       var headline : Boolean){
-    constructor(a : Article) : this(a.id?:(-1),a.title, a.published, a.time, a.type?:Type.NEWS,a.headline)
+    constructor(a : Article) : this(a.id?:(-1),a.title, a.published, a.time, a.type?:Type.NEWS,a.subType,a.headline)
 }
