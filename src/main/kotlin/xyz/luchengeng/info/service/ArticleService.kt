@@ -43,6 +43,9 @@ class ArticleService @Autowired constructor(private val articleRepo: ArticleRepo
         articleRepo.save(
                 Article(null,"拍卖厅介绍", mutableListOf(),contentService.saveContent(emptyContent),LocalDateTime.now(),null,false,false,null)
         )
+        articleRepo.save(
+                Article(null,"艺术银行", mutableListOf(),contentService.saveContent(emptyContent),LocalDateTime.now(),null,false,false,null)
+        )
     }
 
     fun postCover(id: Long,pic: ByteArray){
