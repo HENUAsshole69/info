@@ -14,6 +14,9 @@ data class Article(@Id @GeneratedValue(strategy = GenerationType.AUTO) val id : 
                    val type: Type?,
                    var published: Boolean,
                    var headline : Boolean,
+                   val registry: String?,
+                   val value: String?,
+                   val wareHouseType: String?,
                    @OneToOne val user: User?,
                    val subType: SubType? = null
                    )
@@ -42,7 +45,10 @@ data class ArticleDto(val id: Long,
                       val published : Boolean,
                       val time : LocalDateTime,
                       val type : Type,
+                      val registry: String?,
+                      val value: String?,
+                      val wareHouseType: String?,
                       val subType: SubType?,
                       var headline : Boolean){
-    constructor(a : Article) : this(a.id?:(-1),a.title, a.published, a.time, a.type?:Type.NEWS,a.subType,a.headline)
+    constructor(a : Article) : this(a.id?:(-1),a.title, a.published, a.time, a.type?:Type.NEWS,a.registry,a.value,a.wareHouseType,a.subType,a.headline)
 }

@@ -32,6 +32,12 @@ class ArticleController @Autowired constructor(private val articleService: Artic
         return articleService.getPageByTypeAndSubType(type,subType,pageRequest.toPageRequest())
     }
 
+    @PostMapping("/article/{title}/registry/{registry}/value/{value}/type/{type}")
+    fun getPageByRegistryAndWareHouseTypeAngValue(@RequestHeader("x-api-key") token : String, @PathVariable title : String,@PathVariable type : String,@PathVariable registry: String,@PathVariable value: String, @RequestBody article: String) {
+        val user = authenticationService.tokenVerify(token)
+        articleService.postArticle(user,article,title,registry,type,value)
+    }
+
     @PostMapping("/article/{type}/{title}")
     fun postArticle(@RequestHeader("x-api-key") token : String,@RequestBody article: String,@PathVariable type : Type,@PathVariable title: String) {
         val user = authenticationService.tokenVerify(token)

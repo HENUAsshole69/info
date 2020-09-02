@@ -17,12 +17,17 @@ import javax.annotation.PostConstruct
 class ArticleService @Autowired constructor(private val articleRepo: ArticleRepo,private val contentService: ContentService) {
     fun postArticle(user: User,article: String,title: String,type: Type)=
         articleRepo.save(
-        Article(null,title, mutableListOf(),contentService.saveContent(article),LocalDateTime.now(),type,false,false,user)
+        Article(null,title, mutableListOf(),contentService.saveContent(article),LocalDateTime.now(),type,false,false,null,null,null,user)
         )
 
     fun postArticle(user: User,article: String,title: String,type: Type,subType : SubType)=
             articleRepo.save(
-                    Article(null,title, mutableListOf(),contentService.saveContent(article),LocalDateTime.now(),type,false,false,user,subType = subType)
+                    Article(null,title, mutableListOf(),contentService.saveContent(article),LocalDateTime.now(),type,false,false,null,null,null,user,subType = subType)
+            )
+
+    fun postArticle(user: User,article: String,title: String,registry: String,wareHouseType: String,value: String)=
+            articleRepo.save(
+                    Article(null,title, mutableListOf(),contentService.saveContent(article),LocalDateTime.now(),Type.TAX_FREE,false,false,registry, value, wareHouseType, user)
             )
 
     fun postCover(id: Long,pic: ByteArray){
