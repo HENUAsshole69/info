@@ -47,6 +47,21 @@ class StaticPageService @Autowired constructor(private val staticPageRepo: Stati
         staticPageRepo.save(
                 StaticPage(6,"艺术银行",contentService.saveContent(emptyContent))
         )
+        staticPageRepo.save(
+                StaticPage(7,"社会文物登记服务中心",contentService.saveContent(emptyContent))
+        )
+        staticPageRepo.save(
+                StaticPage(8,"离退+电商",contentService.saveContent(emptyContent))
+        )
+        staticPageRepo.save(
+                StaticPage(9,"艺术品托管平台",contentService.saveContent(emptyContent))
+        )
+        staticPageRepo.save(
+                StaticPage(10,"信息公开",contentService.saveContent(emptyContent))
+        )
+        staticPageRepo.save(
+                StaticPage(11,"信关于我们",contentService.saveContent(emptyContent))
+        )
     }
 
     fun modStaticPageContent(id : Long,article: String){

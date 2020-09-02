@@ -24,29 +24,6 @@ class ArticleService @Autowired constructor(private val articleRepo: ArticleRepo
             articleRepo.save(
                     Article(null,title, mutableListOf(),contentService.saveContent(article),LocalDateTime.now(),type,false,false,user,subType = subType)
             )
-    @PostConstruct
-    fun addStaticContent(){
-        if(articleRepo.count() != 0L) return
-        val emptyContent = "{\"ops\":[{\"insert\":\"\\n\"}]}"
-        articleRepo.save(
-                Article(null,"艺术品介绍", mutableListOf(),contentService.saveContent(emptyContent),LocalDateTime.now(),null,false,false,null)
-        )
-        articleRepo.save(
-                Article(null,"保存介绍", mutableListOf(),contentService.saveContent(emptyContent),LocalDateTime.now(),null,false,false,null)
-        )
-        articleRepo.save(
-                Article(null,"海关监管", mutableListOf(),contentService.saveContent(emptyContent),LocalDateTime.now(),null,false,false,null)
-        )
-        articleRepo.save(
-                Article(null,"展讯介绍", mutableListOf(),contentService.saveContent(emptyContent),LocalDateTime.now(),null,false,false,null)
-        )
-        articleRepo.save(
-                Article(null,"拍卖厅介绍", mutableListOf(),contentService.saveContent(emptyContent),LocalDateTime.now(),null,false,false,null)
-        )
-        articleRepo.save(
-                Article(null,"艺术银行", mutableListOf(),contentService.saveContent(emptyContent),LocalDateTime.now(),null,false,false,null)
-        )
-    }
 
     fun postCover(id: Long,pic: ByteArray){
         val uuid = contentService.saveContent(pic)
