@@ -20,9 +20,9 @@ class StaticPageController  @Autowired constructor(private val staticPageService
         }
     }
 
-    @PostMapping("/static/page/{title}")
-    fun postStaticPage(@RequestHeader("x-api-key") token : String, @RequestBody article: String, @PathVariable title: String) = ifIsAdmin(token){
-        staticPageService.postStaticPage(article,title)
+    @PostMapping("/static/page/{title}/{id}")
+    fun postStaticPage(@RequestHeader("x-api-key") token : String,@PathVariable id: Long, @RequestBody article: String, @PathVariable title: String) = ifIsAdmin(token){
+        staticPageService.postStaticPage(id,article,title)
     }
 
     @GetMapping("/static/page/list")
@@ -40,5 +40,5 @@ class StaticPageController  @Autowired constructor(private val staticPageService
     fun getStaticPageDtoById(@PathVariable id : Long) = staticPageService.getStaticPageDtoById(id)
 
     @DeleteMapping("/static/page/{id}")
-    fun delStaticPageById(@PathVariable id : Long) = staticPageService.delStaticPage(id)
+    fun delStaticPageById(@RequestHeader("x-api-key") token : String,@PathVariable id : Long) = ifIsAdmin(token){staticPageService.delStaticPage(id)}
 }

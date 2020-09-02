@@ -16,9 +16,9 @@ import javax.annotation.PostConstruct
 
 @Service
 class StaticPageService @Autowired constructor(private val staticPageRepo: StaticPageRepo,private val contentService: ContentService) {
-    fun postStaticPage(article: String,title: String)=
+    fun postStaticPage(id: Long,article: String,title: String)=
             staticPageRepo.save(
-                    StaticPage(null,title,contentService.saveContent(article))
+                    StaticPage(id,title,contentService.saveContent(article))
             )
 
     fun getAllStaticPage(): List<StaticPage> = staticPageRepo.findAll()
@@ -53,6 +53,7 @@ class StaticPageService @Autowired constructor(private val staticPageRepo: Stati
         val page = staticPageRepo.findByIdOrNull(id)?:throw NotFoundException("Static Page Not Found")
         contentService.delContent(page.article)
         page.article = contentService.saveContent(article)
+
         staticPageRepo.save(page)
     }
 
