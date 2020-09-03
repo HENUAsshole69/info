@@ -28,7 +28,8 @@ enum class Type{
     ANNOUNCE,
     TAX_FREE,
     EXHIBITION,
-    AUCTION
+    AUCTION,
+    EXHIBITION_INFO
 }
 
 enum class SubType{

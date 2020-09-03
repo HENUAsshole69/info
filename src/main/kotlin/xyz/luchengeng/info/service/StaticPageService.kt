@@ -30,14 +30,15 @@ class StaticPageService @Autowired constructor(private val staticPageRepo: Stati
         if(staticPageRepo.count() != 0L) return
         val emptyContent = "{\"ops\":[{\"insert\":\"\\n\"}]}"
         staticPageRepo.save(
+                StaticPage(1,"艺术品介绍",contentService.saveContent(emptyContent))
+        )
+        staticPageRepo.save(
                 StaticPage(2,"保存介绍",contentService.saveContent(emptyContent))
         )
         staticPageRepo.save(
                 StaticPage(3,"海关监管",contentService.saveContent(emptyContent))
         )
-        staticPageRepo.save(
-                StaticPage(4,"展讯介绍",contentService.saveContent(emptyContent))
-        )
+
         staticPageRepo.save(
                 StaticPage(5,"拍卖厅介绍", contentService.saveContent(emptyContent))
         )
