@@ -33,7 +33,7 @@ class StaticPageService @Autowired constructor(private val staticPageRepo: Stati
                 StaticPage(1,"艺术品介绍",contentService.saveContent(emptyContent))
         )
         staticPageRepo.save(
-                StaticPage(2,"保存介绍",contentService.saveContent(emptyContent))
+                StaticPage(2,"仓储介绍",contentService.saveContent(emptyContent))
         )
         staticPageRepo.save(
                 StaticPage(3,"海关监管",contentService.saveContent(emptyContent))
