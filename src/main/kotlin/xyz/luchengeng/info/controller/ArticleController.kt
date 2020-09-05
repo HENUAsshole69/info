@@ -31,6 +31,10 @@ class ArticleController @Autowired constructor(private val articleService: Artic
     fun getPageByTypeAndSubType( @PathVariable type : Type,@PathVariable subType : SubType, @RequestBody pageRequest : ApiPageRequest): Page<ArticleDto> {
         return articleService.getPageByTypeAndSubType(type,subType,pageRequest.toPageRequest())
     }
+    @PutMapping("/article/wareHouse/properties/{id}")
+    fun putArticleProperties(@PathVariable id : Long,@RequestParam registry: String,@RequestParam wareHouseType: String,@RequestParam value: String){
+        articleService.setTaxFreeProperties(id,registry, wareHouseType, value)
+    }
 
     @PostMapping("/article/{title}/registry/{registry}/value/{value}/type/{type}")
     fun getPageByRegistryAndWareHouseTypeAngValue(@RequestHeader("x-api-key") token : String, @PathVariable title : String,@PathVariable type : String,@PathVariable registry: String,@PathVariable value: String, @RequestBody article: String) {

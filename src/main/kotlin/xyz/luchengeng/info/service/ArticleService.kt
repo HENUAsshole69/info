@@ -20,6 +20,14 @@ class ArticleService @Autowired constructor(private val articleRepo: ArticleRepo
         Article(null,title, mutableListOf(),contentService.saveContent(article),LocalDateTime.now(),type,false,false,null,null,null,user)
         )
 
+    fun setTaxFreeProperties(id: Long,registry: String,wareHouseType: String,value: String){
+        val article = articleRepo.findByIdOrNull(id)?:throw NotFoundException("Article Not Found")
+        article.registry = registry
+        article.wareHouseType = wareHouseType
+        article.value = value
+        articleRepo.save(article)
+    }
+
     fun postArticle(user: User,article: String,title: String,type: Type,subType : SubType)=
             articleRepo.save(
                     Article(null,title, mutableListOf(),contentService.saveContent(article),LocalDateTime.now(),type,false,false,null,null,null,user,subType = subType)

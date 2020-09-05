@@ -14,9 +14,9 @@ data class Article(@Id @GeneratedValue(strategy = GenerationType.AUTO) val id : 
                    val type: Type?,
                    var published: Boolean,
                    var headline : Boolean,
-                   val registry: String?,
-                   val value: String?,
-                   val wareHouseType: String?,
+                   var registry: String?,
+                   var value: String?,
+                   var wareHouseType: String?,
                    @OneToOne val user: User?,
                    val subType: SubType? = null
                    )
