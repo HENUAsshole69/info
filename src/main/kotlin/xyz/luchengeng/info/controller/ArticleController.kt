@@ -89,4 +89,8 @@ class ArticleController @Autowired constructor(private val articleService: Artic
     @DeleteMapping("/article/{id}/headline")
     fun delDeadline(@PathVariable id: Long) =
             articleService.delHeadline(id)
+
+    @PutMapping("/article/{id}/top/{value}")
+    fun putTop(@PathVariable id: Long,@PathVariable value: Boolean) =
+            articleService.setArticleOnTop(id,value)
 }

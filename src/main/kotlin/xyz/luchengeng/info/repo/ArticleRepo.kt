@@ -9,7 +9,7 @@ import xyz.luchengeng.info.entity.*
 
 @Repository
 interface ArticleRepo: JpaRepository<Article,Long>{
-    @Query("select new xyz.luchengeng.info.entity.ArticleDto(a) from Article a where a.type = ?1 and a.published = ?2",countQuery = "select count(a) from Article a where a.type = ?1 and a.published = ?2")
+    @Query("select new xyz.luchengeng.info.entity.ArticleDto(a) from Article a where a.type = ?1 and a.published = ?2 order by case when a.top = true then 1 else 0 end desc,a.time desc ",countQuery = "select count(a) from Article a where a.type = ?1 and a.published = ?2")
     fun findByTypeAndPublished(type: Type,published: Boolean,pageable: Pageable) : Page<ArticleDto>
 
     @Query("select new xyz.luchengeng.info.entity.ArticleDto(a) from Article a where a.type = ?1 and a.subType = ?2 and a.published = ?3",countQuery = "select count(a) from Article a where a.type = ?1 and a.subType = ?2 and a.published = ?3")
