@@ -4,7 +4,8 @@ import javax.persistence.*
 
 enum class UserType(s: String) {
     INDIVIDUAL("INDIVIDUAL"),
-    ADMIN("ADMIN")
+    ADMIN("ADMIN"),
+    AUTH("AUTH")
 }
 @Entity
 data class User(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id : Long?,

@@ -41,4 +41,7 @@ class StaticPageController  @Autowired constructor(private val staticPageService
 
     @DeleteMapping("/static/page/{id}")
     fun delStaticPageById(@RequestHeader("x-api-key") token : String,@PathVariable id : Long) = ifIsAdmin(token){staticPageService.delStaticPage(id)}
+    @PutMapping("/static/page/{id}/publish")
+    fun publishPage(@PathVariable id: Long) =
+            staticPageService.publishPage(id)
 }

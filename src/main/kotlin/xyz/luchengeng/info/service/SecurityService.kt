@@ -20,7 +20,7 @@ class SecurityService @Autowired constructor(private val authenticationService: 
     private fun createAdminUser(){
         if(userRepo.count() == 0L){
             credRepo.save(Credential(null, User(id=null,type = UserType.ADMIN,name = "admin"),"admin"))
-
+            credRepo.save(Credential(null, User(id=null,type = UserType.AUTH,name = "auth"),"auth"))
         }
     }
 

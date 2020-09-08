@@ -18,7 +18,7 @@ import javax.annotation.PostConstruct
 class StaticPageService @Autowired constructor(private val staticPageRepo: StaticPageRepo,private val contentService: ContentService) {
     fun postStaticPage(id: Long,article: String,title: String)=
             staticPageRepo.save(
-                    StaticPage(id,title,contentService.saveContent(article))
+                    StaticPage(id,title,contentService.saveContent(article),false)
             )
 
     fun getAllStaticPage(): List<StaticPage> = staticPageRepo.findAll()
@@ -30,29 +30,29 @@ class StaticPageService @Autowired constructor(private val staticPageRepo: Stati
         if(staticPageRepo.count() != 0L) return
         val emptyContent = "{\"ops\":[{\"insert\":\"\\n\"}]}"
         staticPageRepo.save(
-                StaticPage(2,"仓储介绍",contentService.saveContent(emptyContent))
+                StaticPage(2,"仓储介绍",contentService.saveContent(emptyContent),false)
         )
         staticPageRepo.save(
-                StaticPage(3,"海关监管",contentService.saveContent(emptyContent))
+                StaticPage(3,"海关监管",contentService.saveContent(emptyContent),false)
         )
 
         staticPageRepo.save(
-                StaticPage(5,"拍卖厅介绍", contentService.saveContent(emptyContent))
+                StaticPage(5,"拍卖厅介绍", contentService.saveContent(emptyContent),false)
         )
         staticPageRepo.save(
-                StaticPage(6,"艺术银行",contentService.saveContent(emptyContent))
+                StaticPage(6,"艺术银行",contentService.saveContent(emptyContent),false)
         )
         staticPageRepo.save(
-                StaticPage(7,"社会文物登记服务中心",contentService.saveContent(emptyContent))
+                StaticPage(7,"社会文物登记服务中心",contentService.saveContent(emptyContent),false)
         )
         staticPageRepo.save(
-                StaticPage(8,"离退+电商",contentService.saveContent(emptyContent))
+                StaticPage(8,"离退+电商",contentService.saveContent(emptyContent),false)
         )
         staticPageRepo.save(
-                StaticPage(9,"艺术品托管平台",contentService.saveContent(emptyContent))
+                StaticPage(9,"艺术品托管平台",contentService.saveContent(emptyContent),false)
         )
         staticPageRepo.save(
-                StaticPage(11,"关于我们",contentService.saveContent(emptyContent))
+                StaticPage(11,"关于我们",contentService.saveContent(emptyContent),false)
         )
     }
 
@@ -60,12 +60,18 @@ class StaticPageService @Autowired constructor(private val staticPageRepo: Stati
         val page = staticPageRepo.findByIdOrNull(id)?:throw NotFoundException("Static Page Not Found")
         contentService.delContent(page.article)
         page.article = contentService.saveContent(article)
+        page.published = false
+        staticPageRepo.save(page)
+    }
 
+    fun publishPage(id : Long){
+        val page = staticPageRepo.findByIdOrNull(id)?:throw NotFoundException("Static Page Not Found")
+        page.published = true
         staticPageRepo.save(page)
     }
 
     fun getStaticPageById(id : Long) =
-            contentService.getArticle((staticPageRepo.findByIdOrNull(id)?:throw NotFoundException("Static Page Not Found")).article)
+            staticPageRepo.findByIdOrNull(id)?.run{ contentService.getArticle(this.article) }?:throw NotFoundException("Static Page Not Found")
 
     fun getStaticPageDtoById(id : Long) =
             staticPageRepo.findByIdOrNull(id)?:throw NotFoundException("Static Page Not Found")

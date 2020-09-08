@@ -7,5 +7,6 @@ import javax.persistence.*
 @Entity
 data class StaticPage(@Id val id : Long?,
                    val title: String,
-                   var article: UUID
+                   var article: UUID,
+                   var published: Boolean?
 )
