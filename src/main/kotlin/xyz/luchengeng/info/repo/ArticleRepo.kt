@@ -13,12 +13,16 @@ interface ArticleRepo: JpaRepository<Article,Long>{
     fun findByTypeAndPublished(type: Type,published: Boolean,pageable: Pageable) : Page<ArticleDto>
 
     @Query("select new xyz.luchengeng.info.entity.ArticleDto(a) from Article a where a.type = ?1 and a.subType = ?2 and a.published = ?3",countQuery = "select count(a) from Article a where a.type = ?1 and a.subType = ?2 and a.published = ?3")
-    fun findByTypeAndSubType(type: Type,subType : SubType,published: Boolean,pageable: Pageable) : Page<ArticleDto>
+    fun findByTypeAndSubTypeAndPublished(type: Type, subType : SubType, published: Boolean, pageable: Pageable) : Page<ArticleDto>
 
     @Query("select new xyz.luchengeng.info.entity.ArticleDto(a) from Article a where a.type = ?1",countQuery = "select count(a) from Article a where a.type = ?1")
     fun findByType(type: Type,pageable: Pageable) : Page<ArticleDto>
     @Query("select new xyz.luchengeng.info.entity.ArticleDto(a) from Article a where a.headline = true",countQuery = "select count(a) from Article a where a.headline = true")
     fun findHeadline() : List<ArticleDto>
     @Query("select new xyz.luchengeng.info.entity.ArticleDto(a) from Article a where a.type = ?1 and a.user = ?2",countQuery = "select count(a) from Article a where a.type = ?1 and a.user = ?2")
-    fun findByTypeANdUser(type: Type,user: User,pageable: Pageable) : Page<ArticleDto>
+    fun findByTypeAndUser(type: Type, user: User, pageable: Pageable) : Page<ArticleDto>
+    @Query("select new xyz.luchengeng.info.entity.ArticleDto(a) from Article a where a.type = ?1 and a.user = ?2 and a.subType = ?3",countQuery = "select count(a) from Article a where a.type = ?1 and a.user = ?2 and a.subType = ?3")
+    fun findByTypeAndSubTypeAndUser(type: Type, user: User,subType: SubType, pageable: Pageable) : Page<ArticleDto>
+    @Query("select new xyz.luchengeng.info.entity.ArticleDto(a) from Article a where a.type = ?1 and a.subType = ?2",countQuery = "select count(a) from Article a where a.type = ?1 and a.subType = ?2")
+    fun findByTypeAndSubType(type: Type,subType: SubType, pageable: Pageable) : Page<ArticleDto>
 }

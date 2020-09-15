@@ -2,14 +2,10 @@ package xyz.luchengeng.info.controller
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
-import org.springframework.data.repository.findByIdOrNull
-import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import xyz.luchengeng.info.entity.*
-import xyz.luchengeng.info.except.NotFoundException
 import xyz.luchengeng.info.service.ArticleService
 import xyz.luchengeng.info.service.AuthenticationService
-import java.time.LocalDateTime
 
 @RestController
 class ArticleController @Autowired constructor(private val articleService: ArticleService,private val authenticationService: AuthenticationService){
@@ -28,8 +24,18 @@ class ArticleController @Autowired constructor(private val articleService: Artic
     }
 
     @PostMapping("/article/page/type/{type}/subType/{subType}")
-    fun getPageByTypeAndSubType( @PathVariable type : Type,@PathVariable subType : SubType, @RequestBody pageRequest : ApiPageRequest): Page<ArticleDto> {
+    fun getPageByTypeAndSubTypeAndPublished( @PathVariable type : Type,@PathVariable subType : SubType, @RequestBody pageRequest : ApiPageRequest): Page<ArticleDto> {
+        return articleService.getPageByTypeAndSubTypeAndPublished(type,subType,pageRequest.toPageRequest())
+    }
+    @PostMapping("/article/page/type/{type}/subType/{subType}/all")
+    fun getPageByTypeAndSubType( @RequestHeader("x-api-key") token : String,@PathVariable type : Type,@PathVariable subType : SubType, @RequestBody pageRequest : ApiPageRequest): Page<ArticleDto> {
+        val user = authenticationService.tokenVerify(token)
         return articleService.getPageByTypeAndSubType(type,subType,pageRequest.toPageRequest())
+    }
+    @PostMapping("/article/page/type/{type}/subType/{subType}/user")
+    fun getPageByTypeAndSubTypeAndUser(@RequestHeader("x-api-key") token : String, @PathVariable type : Type,@PathVariable subType : SubType, @RequestBody pageRequest : ApiPageRequest): Page<ArticleDto> {
+        val user = authenticationService.tokenVerify(token)
+        return articleService.getPageByTypeAndSubTypeAndUser(type,subType,user,pageRequest.toPageRequest())
     }
     @PutMapping("/article/wareHouse/properties/{id}")
     fun putArticleProperties(@PathVariable id : Long,@RequestParam registry: String,@RequestParam wareHouseType: String,@RequestParam value: String){

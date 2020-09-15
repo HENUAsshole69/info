@@ -10,7 +10,6 @@ import xyz.luchengeng.info.except.NotAuthorizedException
 import xyz.luchengeng.info.except.NotFoundException
 import xyz.luchengeng.info.repo.ArticleRepo
 import java.time.LocalDateTime
-import javax.annotation.PostConstruct
 
 
 @Service
@@ -95,7 +94,7 @@ class ArticleService @Autowired constructor(private val articleRepo: ArticleRepo
             articleRepo.findByType(type, pageable)
 
     fun pageByTypeAndUser(type: Type,user: User,pageable: Pageable)=
-            articleRepo.findByTypeANdUser(type,user, pageable)
+            articleRepo.findByTypeAndUser(type,user, pageable)
 
     fun updateArticle(id: Long,a: String,user : User){
         val article = (articleRepo.findByIdOrNull(id)?:throw NotFoundException("Article Not Found"))
@@ -119,5 +118,9 @@ class ArticleService @Autowired constructor(private val articleRepo: ArticleRepo
     fun getHeadline()=
             articleRepo.findHeadline()
 
-    fun getPageByTypeAndSubType(type: Type,subType: SubType,pageable: Pageable) = articleRepo.findByTypeAndSubType(type,subType,true,pageable)
+    fun getPageByTypeAndSubTypeAndPublished(type: Type, subType: SubType, pageable: Pageable) = articleRepo.findByTypeAndSubTypeAndPublished(type,subType,true,pageable)
+
+    fun getPageByTypeAndSubType(type: Type, subType: SubType, pageable: Pageable) = articleRepo.findByTypeAndSubType(type,subType,pageable)
+
+    fun getPageByTypeAndSubTypeAndUser(type: Type, subType: SubType,user:User, pageable: Pageable) = articleRepo.findByTypeAndSubTypeAndUser(type,user,subType,pageable)
 }
